@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <title>Testing</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: sans-serif;
+    }
+
+    input,
+    textarea,
+    [contenteditable] {
+      font: inherit;
+      line-height: 1.5;
+      width: 600px;
+      padding: 8px 12px;
+      overflow: auto;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    [contenteditable] {
+      height: 10rem;
+      border: 1px solid;
+      resize: both;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>Test Editor</h2>
+  <textarea rows="17" id="mytextarea">
+ </textarea>
+
+  <script src="https://unpkg.com/@grammarly/editor-sdk@2.3.9?clientId=client_9m1fYK3MPQxwKsib5CxtpB"></script>
+  <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+
+  <script type="module">
+    async function addGrammarlyAndTinyMceToElement(elementId) {
+      const grammarly = await Grammarly.init();
+      const grammarlyPluginElement = grammarly.addPlugin(
+        document.querySelector(elementId),
+        {
+          documentDialect: "british",
+          autocomplete: "on"
+        }
+      );
+
+      const tinyEditors = await tinymce.init({
+        selector: elementId
+      });
+      const tinyEditor = tinyEditors[0];
+
+      const editor = tinyEditor.getBody(); 
+      const viewport = tinyEditor.iframeElement;
+      grammarlyPluginElement.connect(editor, viewport);
+    }
+
+    addGrammarlyAndTinyMceToElement("#mytextarea");
+    addGrammarlyAndTinyMceToElement("#mydiv");
+  </script>
+</body>
+
+</html>
